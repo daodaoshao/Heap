@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Heap {
     private int[] a;
     private int n;
@@ -31,22 +33,39 @@ public class Heap {
         if (count == 0) return;
         a[1] = a[count];
         --count;
+        heapify(a,n,1);
     }
 
-    private void heapify(int[] a, int n, int i) {
+    private void heapify(int[] a, int n, int i) {//从上往下的堆化
         while (true) {
             int maxPOS = i;
-            if (i*2 <= n && a[i] < a[i*2]) maxPOS = i*2;
-            if (i*2 + 1 <= n && a[maxPOS] < a[i*2 +1]) maxPOS = i*2 + 1;
+            if (i*2 <= n && a[i] < a[i*2]) maxPOS = i*2; //如果父节点小于叶子节点，交换位置
+            if (i*2 + 1 <= n && a[maxPOS] < a[i*2 +1]) maxPOS = i*2 + 1; //如果父节点小于叶子节点，交换位置
             if (maxPOS == i) break;
             swap(a,i,maxPOS);
             i = maxPOS;
         }
     }
 
-    private  void buildHeapFromTopTobottom(int[] a, int n) {
+    private  void buildHeapFromTopTobottom(int[] a, int n) {//从顶向下堆化
         for (int i = 1; i <= n ; i++) {
             insert(a[i]);
         }
+    }
+
+    private  void buildHeapFromBottomTobottom(int[] a, int n) {
+        for (int i = n/2; i >= 1 ; --i) {
+            heapify(a,n,i);
+        }
+    }
+
+    @Override
+    public String toString() {
+       int[] temp = Arrays.copyOfRange(a,1,a.length );
+        return Arrays.toString(temp);
+    }
+
+    public int ElementOfHeap() {
+        return a[1];
     }
 }
